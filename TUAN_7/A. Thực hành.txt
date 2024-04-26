@@ -1,0 +1,180 @@
+A. Thực hành
+1. 
+	Point* p = new Point;
+	p->x = 10;
+	(*p).y = 20;
+	cout << p->x << “ “ << p->y;
+	...	
+	delete p;
+//Chưa giải phóng bộ nhớ
+// delete (*p);
+
+
+	int *pX;
+	printf("%d\n", pX);
+	printf("%d\n", *pX);
+	*pX = 0;
+	return 0;
+//Con trỏ chưa khởi tạo -> Lỗi ghi đè dữ liệu
+
+
+	int *pX = NULL;
+	printf("%d\n", pX);
+	printf("%d\n", *pX);
+	*pX = 0;
+	return 0;
+//Lỗi truy nhập con trỏ NULL
+
+
+int* weird_sum(int a, int b)
+{
+	int c;
+	c = a + b;
+	return &c;
+}
+//Lỗi dangling references (truy nhập tới bộ nhớ không hợp lệ, vd: trả về trỏ tới biến địa phương)
+
+
+ptr1 = new int;
+ptr2 = new int;
+ptr1 = ptr2;
+//Thất thoát bộ nhớ
+
+2.
+#include <iostream>
+using namespace std;
+
+void f(int* arr) {
+    cout << sizeof(arr) << endl;
+}
+
+int main() {
+    int A[10];
+    cout << sizeof(A) << endl;
+    f(A);
+    return 0;
+}
+
+//sizeof(A) là 40 tương đương 4byte*10 còn arr là 4byte
+
+3.
+int count_even(int *arr, int size)
+{
+    int count = 0;
+    for (int i = 0; i < size; i++)
+    {
+        if (*(arr + i) % 2 == 0)
+        {
+            count++;
+        }
+        else
+        {
+            continue;
+        }
+    }
+    return count;
+}
+
+int main()
+{
+    int A[10] = {1, 2, 3, 44, 25, 12, 7, 8, 9, 10};
+    int *p = A;
+    int *q = A + 5;
+    cout << count_even(p, 5) << endl;
+    cout << count_even(q, 5) << endl;
+}
+
+4.
+bool BinarySearch(int *start, int *end, int find)
+{
+    if (start > end)
+    {
+        return false;
+    }
+
+    int *mid = start + (end - start) / 2;
+
+    if (*mid == find)
+    {
+        return true;
+    }
+    else if (*mid > find)
+    {
+        return BinarySearch(start, mid - 1, find);
+    }
+    else
+    {
+        return BinarySearch(mid + 1, end, find);
+    }
+}
+
+int main()
+{
+    int n;
+    cin >> n;
+
+    int arr[n];
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    sort(arr, arr + n);
+    int *start = arr;
+    int *end = arr + n - 1; 
+    if (BinarySearch(start, end, 5))
+    {
+        cout << "YES";
+    }
+    else
+    {
+        cout << "NO";
+    }
+    return 0;
+}
+
+5.
+ warning: address of local variable 'c' returned [-Wreturn-local-addr]
+
+6.
+Number of command-line arguments: 0
+
+Number of command-line arguments: 3
+Argument #0: _first_
+Argument #1: _second_
+Argument #2: _3rd_
+
+Number of command-line arguments: 1
+Argument #0: _1_
+
+7.
+#include <bits/stdc++.h>
+using namespace std;
+
+int cot = 0;
+
+int countSubstrings(const char *str1, const char *str2)
+{
+
+    int n1 = strlen(str1); // Length of str1
+    int n2 = strlen(str2); // Length of str2
+
+    for (int i = 0; i <= n2 - n1; i++)
+    {
+        if (strcmp(str1, str2 + i) == 0)
+        {
+            cot++;
+        }
+    }
+
+    return cot;
+}
+
+int main()
+{
+    char str1[100], str2[100];
+    cin >> str1;
+    cin >> str2;
+    int result = countSubstrings(str1, str2);
+    cout << result;
+}
+
